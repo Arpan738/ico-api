@@ -1,8 +1,8 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../../utils/catchAsync');
-const authService= require('./auth.service');
+const authService = require('./auth.service');
 const tokenService = require('./token.service')
-const {sendResponse}  = require('../../utils/responseHandler');
+const { sendResponse } = require('../../utils/responseHandler');
 const pick = require('../../utils/pick');
 const ApiError = require('../../utils/apiErrors');
 
@@ -30,57 +30,37 @@ const register = catchAsync(async (req, res) => {
     name,
     profilePic
   }
-  
+
   const user = await authService.signup(userObj);
-  if(user){
+  if (user) {
     sendResponse(res, httpStatus.CREATED, user, null)
-  }else{
+  } else {
     throw new ApiError(httpStatus.BAD_REQUEST, "User was not registered", false, false)
   }
 
 });
 
 
-
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
-    
-    const user = await authService.loginUserWithEmailAndPassword(email, password);
-    console.log("user",user);
-    
-    if(!user){
-      return sendResponse(res, httpStatus.FORBIDDEN, null, "Something went wrong, try again");
-    }
-    
-    // sendResponse(res, 200 , { user: user, "tokens":{} }, null);
-    const tokens = await tokenService.generateAuthTokens(user);
-    sendResponse(res, httpStatus.OK, { user: user, tokens }, null);
+
+  const user = await authService.loginUserWithEmailAndPassword(email, password);
+  if (!user) {
+    return sendResponse(res, httpStatus.FORBIDDEN, null, "Something went wrong, try again");
+  }
+
+  const tokens = await tokenService.generateAuthTokens(user);
+  sendResponse(res, httpStatus.OK, { user: user, tokens }, null);
 });
 
 
-
 const getCurrentUser = catchAsync(async (req, res) => {
-  try {
-    const { token } = req.body;
-    const userRes = await authService.getCurrentUser(token);
-    if (userRes.status) {
-      res.status(httpStatus.OK).json({
-        code: httpStatus.OK,
-        status:true,
-        data: { userData: userRes.userData, profileData:userRes.profileData }
-      });
-    } else {
-      res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-        code: httpStatus.INTERNAL_SERVER_ERROR,
-        status:false,
-        data: 'something went wrong',
-      });
-    }
-  } catch (err) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      status: httpStatus.BAD_REQUEST,
-      data: err.message,
-    });
+  const { token } = req.body;
+  const userRes = await authService.getCurrentUser(token);
+  if (userRes.status) {
+    return sendResponse(res, httpStatus.OK, null, { userData: userRes.userData, profileData: userRes.profileData });
+  } else {
+    return sendResponse(res, httpStatus.INTERNAL_SERVER_ERROR, null, userRes.message || 'Unable to fetch user data');
   }
 });
 
@@ -98,6 +78,6 @@ module.exports = {
   register,
   login,
   logout,
-//   refreshTokens,
+  //   refreshTokens,
   getCurrentUser,
 };

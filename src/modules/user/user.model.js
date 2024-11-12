@@ -3,8 +3,6 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('../../plugins');
 const counterIncrementor = require('../../utils/counterIncrement');
-const { string } = require('joi');
-const { objectId } = require('../../validations/custom.validation');
 
 const userSchema = mongoose.Schema(
   {
@@ -84,7 +82,6 @@ userSchema.methods.isPasswordMatch = async function (password) {
 };
 
 userSchema.pre('findOneAndUpdate', async function (next) {
-  // console.log("update hook fired")
   const user = this;
   if (user._update && user._update.password) {
     user._update.password = await bcrypt.hash(user._update.password, 8);

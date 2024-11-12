@@ -1,5 +1,4 @@
-module.exports.listController = require('./list.controller');
-module.exports.listControllerWithoutLimit = require('./userListWithOutLimit.controller');
-module.exports.update = require("./controller.updateUser")
-module.exports.updatePassword = require("./updateUserWithPassword.controller")
-module.exports.getSingleUser = require("./controller.getSingleUser")
+module.exports.list = require('./controller.list');
+module.exports.login = require('./controller.login');
+module.exports.updateUser = require("./controller.updateUser")
+module.exports.getUserById = require("./controller.getUserById")

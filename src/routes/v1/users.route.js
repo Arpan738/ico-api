@@ -1,23 +1,17 @@
 const express = require('express');
 const validate = require('../../middlewares/validate');
-const Validation = require('../../modules/user/validation');
-const Controller = require('../../modules/user/controllers');
+const userValidation = require('../../modules/user/validation');
+const userController = require('../../modules/user/controllers');
 // const auth = require('../../middlewares/auth');
 
 const router = express.Router();
 
-router.route('/list')
-    .get( Controller.listControllerWithoutLimit)
-
-router.route('/')
-    .get(Controller.listController)
+router.route('/login').post(validate(userValidation.login), userController.login);
+router.route('/').get(userController.list)
 
 router.route('/:id')
-    .post(validate(Validation.update), Controller.update)
-    .get(Controller.getSingleUser);
+    .post(validate(userValidation.update), userController.updateUser)
+    .get(userController.getUserById);
 
-router.route('/update-user-with-pass/:id')
-    .post(validate(Validation.updateWithPass), Controller.updatePassword)
-    
-    // .post(auth("update-password"), validate(Validation.updateWithPass), Controller.updatePassword)
+
 module.exports = router;

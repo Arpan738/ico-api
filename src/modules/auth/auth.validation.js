@@ -51,21 +51,6 @@ const login = {
   }),
 };
 
-const adminLogin = {
-  body: Joi.object().keys({
-    email: Joi.string().email().required().messages({
-      "string.empty": `Email must contain value`,
-      "any.required": `Email is a required field`,
-      "string.email": `Email must be a valid email`
-    }),
-    password: Joi.string().required().messages({
-      "string.empty": `Password must contain value`,
-      "any.required": `Password is a required field`
-    }),
-    
-  }),
-};
-
 const resetPasswordValidation = {
   body: Joi.object().keys({
     token: Joi.string().required(),
@@ -90,7 +75,6 @@ module.exports = {
   login,
   logout,
   resetPasswordValidation,
-  adminLogin,
   socialLogin,
   signup
 };

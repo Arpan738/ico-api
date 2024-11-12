@@ -1,7 +1,7 @@
 const mongoose  = require('mongoose');
 const model = require('./../user.model')
 
-const usersList = async ({limit=100, page=0},search) => {
+const getUsersList = async ({limit=100, page=0},search) => {
 
 	let filterQuery = { $and: [{ active: true,role: {$ne: "superAdmin"}}] };
 
@@ -87,4 +87,4 @@ const usersList = async ({limit=100, page=0},search) => {
 };
 
 
-module.exports = usersList
+module.exports = getUsersList
