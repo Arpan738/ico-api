@@ -3,7 +3,6 @@ const config = require('./config');
 const { tokenTypes } = require('./tokens');
 const User = require('../modules/user/user.model');
 const mongoose = require('mongoose');
-const { getAccessModulesFn, getAllAccessModulesForSuAdmin } = require('../modules/auth/auth.service');
 
 const jwtOptions = {
   secretOrKey: config.jwt.secret,

@@ -18,7 +18,6 @@ const envVarsSchema = Joi.object()
 		JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: Joi.number()
 			.default(10)
 			.description('Minutes after which verify email token expires'),
-		BMA_API_BASE_URL : Joi.string()
 	})
 	.unknown();
 
@@ -46,5 +45,4 @@ module.exports = {
 		resetPasswordExpirationMinutes: envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
 		verifyEmailExpirationMinutes: envVars.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES,
 	},
-	bmaApiBaseUrl : envVars.BMA_API_BASE_URL
 };
